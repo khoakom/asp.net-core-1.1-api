@@ -46,7 +46,7 @@ namespace AspNetCorePublisherWebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            //app.UseStatusCodePages();
             app.UseMvc();
 
             //app.UseMvc(routes =>
