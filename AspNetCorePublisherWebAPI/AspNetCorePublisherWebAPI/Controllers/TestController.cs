@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCorePublisherWebAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace AspNetCorePublisherWebAPI.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("Hello, from the controller!");
+            var model = new Message { Id = 1, Text = "Message, from the Get action." };
+            return Ok(model);
         }
     }
 }
