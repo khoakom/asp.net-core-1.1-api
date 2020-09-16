@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCorePublisherWebAPI.Entities;
 using AspNetCorePublisherWebAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,7 +22,7 @@ namespace AspNetCorePublisherWebAPI
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
+                .AddJsonFile("appsettings.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -34,7 +36,19 @@ namespace AspNetCorePublisherWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddScoped(typeof(IBookstoreRepository), typeof(BookstoreMockRepository));
+
+            var conn = Configuration["connectionStrings:sqlConnection"];
+            services.AddDbContext<SqlDbContext>(options => options.UseSqlServer(conn));
+
+            //services.AddScoped(typeof(IBookstoreRepository), typeof(BookstoreMockRepository));
+            services.AddScoped(typeof(IBookstoreRepository), typeof(BookstoreSqlRepository));
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Entities.Book, Models.BookDTO>();
+                config.CreateMap<Models.BookDTO, Entities.Book>();
+                config.CreateMap<Entities.Publisher, Models.PublisherDTO>();
+                config.CreateMap<Models.PublisherDTO, Entities.Publisher>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
