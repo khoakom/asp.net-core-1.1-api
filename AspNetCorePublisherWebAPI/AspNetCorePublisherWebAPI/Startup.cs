@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCorePublisherWebAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,7 @@ namespace AspNetCorePublisherWebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddScoped(typeof(IBookstoreRepository), typeof(BookstoreMockRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
