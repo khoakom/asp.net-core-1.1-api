@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -45,11 +46,24 @@ namespace AspNetCorePublisherWebAPI
             }
 
             app.UseMvc();
+
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute(
+            //    name: "default",
+            //    template: "{controller=Home}/{action=Index}/{id?}");
+            //});
+
             //app.Run(async (context) =>
             //{
             //    var message = Configuration["Message"];
             //    await context.Response.WriteAsync(message);
             //});
+        }
+
+        private void ConfigureRoutes(IRouteBuilder routeBuildrer)
+        {
+            routeBuildrer.MapRoute("Default", "{controller=Home}/{action=Index}/{Id?}");
         }
     }
 }
